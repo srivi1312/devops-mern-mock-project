@@ -9,7 +9,8 @@ function App() {
 
   const fetchTasks = async () => {
     const res = await axios.get(API);
-    setTasks(res.data);
+    const { tasks } = res.data; // response contains object with tasks array, but .map function expects an array directly
+    setTasks(tasks);
   };
 
   const addTask = async () => {

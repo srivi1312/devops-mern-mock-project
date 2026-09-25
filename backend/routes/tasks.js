@@ -5,7 +5,11 @@ const Task = require('../models/Task');
 // GET all tasks
 router.get('/', async (req, res) => {
     const tasks = await Task.find();
-    res.json(tasks);
+    // demo for returning just the tasks array
+    // res.json(tasks);
+
+    // demo res.json({ message: 'Hello World' , tasks})
+    res.json({ message: 'Hello World', tasks });
 });
 
 // POST create task
