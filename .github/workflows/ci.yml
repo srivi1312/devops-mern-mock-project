@@ -6,15 +6,20 @@ on:
 
 jobs:
 
-  mongo-init:
+  mongo-init-backend-test:
 
     runs-on: ubuntu-latest
+
+    env:
+      PORT: ${ secrets.PORT }
+      MONGO_URI: ${ secrets.MONGO_URI }
 
     services:
       mongo:
         image: mongo
         ports:
           - 27017:27017
+    
     steps:
       - name: Checkout Repository into GH runner
         uses: actions/checkout@v5
@@ -37,29 +42,9 @@ jobs:
         run: |
           npm install
           node seedTasksData.js
-
-
-  backend-test:
-    runs-on: ubuntu-latest
-    needs: mongo-init
-
-    env:
-      PORT: ${ secrets.PORT }
-      MONGO_URI: ${ secrets.MONGO_URI }
-
-    steps:
-      - name: Checkout Repository into GH runner
-        uses: actions/checkout@v5
-
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies and run tests
+        
+      - name: Running Backend test
         working-directory: ./backend
         run: |
-          npm install
           npm test
-
-    
+  
