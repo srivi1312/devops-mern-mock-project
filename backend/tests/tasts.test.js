@@ -15,6 +15,8 @@ describe('GET api/tasks', () => {
 
         expect(typeof res.body).toBe('object');  // similar condition for checking if return is an object type
         expect(res.body).toHaveProperty('tasks');
+
+        console.log(res.body.tasks, 'DATA SEEDED')
     });
 });
 
