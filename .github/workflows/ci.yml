@@ -5,7 +5,9 @@ on:
     branches: [main]
 
 jobs:
+
   mongo-init:
+
     runs-on: ubuntu-latest
 
     services:
@@ -14,6 +16,14 @@ jobs:
         ports:
           - 27017:27017
     steps:
+      - name: Checkout Repository into GH runner
+        uses: actions/checkout@v5
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
       - name: Waiting for MongoDB to be ready
         run: |
           until nc -z localhost 27017; do
@@ -27,5 +37,25 @@ jobs:
         run: |
           npm install
           node seedTasksData.js
+
+
+  backend-test:
+    runs-on: ubuntu-latest
+    needs: mongo-init
+
+    steps:
+      - name: Checkout Repository into GH runner
+        uses: actions/checkout@v5
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies and run tests
+        working-directory: ./backend
+        run: |
+          npm install
+          npm test
 
     
